@@ -8,6 +8,15 @@
  * All handlers are delegated / guarded so they survive PJAX navigations.
  */
 (function() {
+  function storedTheme() {
+    try {
+      const value = localStorage.getItem('theme');
+      return value === 'light' || value === 'dark' ? value : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function currentTheme() {
     const theme = document.documentElement.dataset.theme;
     if (theme === 'light' || theme === 'dark') return theme;
@@ -43,22 +52,39 @@
   function openDrawer() {
     const drawer = document.querySelector('.toc-drawer');
     if (!drawer) return;
+    // Reserve the scrollbar width before locking the body, like the search UI.
+    if (window.NexT && NexT.utils && typeof NexT.utils.setGutter === 'function') {
+      NexT.utils.setGutter();
+    }
     drawer.classList.add('toc-open');
     drawer.setAttribute('aria-hidden', 'false');
+    drawer.removeAttribute('inert');
     const dimmer = document.querySelector('.toc-dimmer');
     if (dimmer) dimmer.classList.add('toc-open');
     document.body.classList.add('toc-open');
+    document.querySelectorAll('.toc-fab').forEach(el => el.setAttribute('aria-expanded', 'true'));
+    const close = drawer.querySelector('.toc-drawer-close');
+    if (close) close.focus();
   }
 
-  function closeDrawer() {
+  function closeDrawer(options) {
+    const restoreFocus = Boolean(options && options.restoreFocus);
+    const open = document.querySelector('.toc-drawer.toc-open');
+    const hadFocus = Boolean(open && open.contains(document.activeElement));
     document.querySelectorAll('.toc-drawer.toc-open').forEach(el => {
       el.classList.remove('toc-open');
       el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('inert', '');
     });
     document.querySelectorAll('.toc-dimmer.toc-open').forEach(el => {
       el.classList.remove('toc-open');
     });
+    document.querySelectorAll('.toc-fab').forEach(el => el.setAttribute('aria-expanded', 'false'));
     document.body.classList.remove('toc-open');
+    if (restoreFocus && hadFocus) {
+      const fab = document.querySelector('.toc-fab');
+      if (fab) fab.focus();
+    }
   }
 
   document.addEventListener('click', event => {
@@ -67,15 +93,20 @@
     if (target.closest('.toc-fab')) {
       openDrawer();
     } else if (target.closest('.toc-drawer-close') || target.closest('.toc-dimmer')) {
-      closeDrawer();
+      closeDrawer({ restoreFocus: true });
     } else if (target.closest('.toc-drawer a')) {
-      // Jump to the heading, then get out of the way.
+      // Jump to the heading, then get out of the way (leave focus alone).
       closeDrawer();
     }
   });
 
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') closeDrawer();
+    if (event.key === 'Escape') closeDrawer({ restoreFocus: true });
+  });
+
+  // Follow OS theme changes unless the visitor picked a theme manually.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    if (storedTheme() === null) applyTheme(event.matches ? 'dark' : 'light');
   });
 
   function init() {

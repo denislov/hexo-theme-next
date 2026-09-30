@@ -111,6 +111,8 @@ accessibility:
   next_page: Next page
   back_to_top: Back to top
   select_lang: Select language
+  theme_toggle: Toggle light/dark theme
+  close: Close
 
 symbols_count_time:
   count: Word count in article

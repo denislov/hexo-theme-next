@@ -5,14 +5,14 @@
 {%- if page.toc.enable and page.toc and page.content %}
   {%- set tocContent = toc(page.content, {class: 'nav', list_number: page.toc.number, max_depth: page.toc.max_depth}) %}
   {%- if tocContent and tocContent.length > 1 %}
-    <button type="button" class="toc-fab" aria-label="{{ __('sidebar.toc') }}" title="{{ __('sidebar.toc') }}">
+    <button type="button" class="toc-fab" aria-label="{{ __('sidebar.toc') }}" title="{{ __('sidebar.toc') }}" aria-controls="toc-drawer" aria-expanded="false">
       <i class="fa fa-list-ul"></i>
     </button>
     <div class="toc-dimmer"></div>
-    <aside class="toc-drawer" aria-hidden="true">
+    <aside id="toc-drawer" class="toc-drawer" aria-hidden="true" inert>
       <div class="toc-drawer-header">
         <span class="toc-drawer-title">{{ __('sidebar.toc') }}</span>
-        <button type="button" class="toc-drawer-close" aria-label="关闭">
+        <button type="button" class="toc-drawer-close" aria-label="{{ __('accessibility.close') }}">
           <i class="fa fa-times"></i>
         </button>
       </div>

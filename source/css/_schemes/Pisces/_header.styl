@@ -1,8 +1,15 @@
 // Header bar: brand on the left, controls on the right. On wide screens the
 // tab bar is pulled into the middle of the same row (see the grid below).
 
+// The sticky element must be the *containing block*'s child, otherwise a
+// wrapper that is only as tall as the header gives sticky zero travel.
+// `.column` is that wrapper (and, with the sidebar removed, holds only the
+// header), and its containing block `.main` spans the whole page.
 .column {
+  position: sticky;
+  top: 0;
   width: 100%;
+  z-index: 30;
 }
 
 .site-brand-container {

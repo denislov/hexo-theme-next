@@ -65,7 +65,7 @@ html[data-theme='dark'] {
   right: 30px;
   transition: opacity .2s ease, transform .2s ease;
   width: 40px;
-  z-index: 30;
+  z-index: 20;
 }
 
 .toc-fab:hover {
@@ -102,13 +102,15 @@ html[data-theme='dark'] {
   right: 0;
   top: 0;
   transform: translateX(100%);
-  transition: transform .3s ease;
+  transition: transform .3s ease, visibility .3s ease;
+  visibility: hidden;
   width: 320px;
   z-index: 39;
 }
 
 .toc-drawer.toc-open {
   transform: translateX(0);
+  visibility: visible;
 }
 
 .toc-drawer-header {
@@ -146,7 +148,14 @@ html[data-theme='dark'] {
 }
 
 body.toc-open {
+  margin-right: var(--dialog-scrollgutter, 0);
   overflow: hidden;
+}
+
+// The search overlay lives inside the header's `z-index: 30` stacking context,
+// so these page-level controls must sit below it to avoid covering search.
+.back-to-top {
+  z-index: 20;
 }
 
 // Dark syntax highlighting. Highlight token colours are not part of the
