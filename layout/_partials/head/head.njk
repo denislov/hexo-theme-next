@@ -65,3 +65,22 @@
 
 {{ next_data('main', next_config()) }}
 {{- next_js('config.js') }}
+
+{# Manual light/dark theme support (this fork). The dark syntax-highlighting
+   stylesheet is toggled by `blog-custom.js`; this inline script runs before
+   <body> renders so there is no flash of the wrong theme. #}
+<link id="highlight-dark" rel="stylesheet" href="{{ url_for(theme.css) }}/highlight-dark.css" disabled>
+<script>
+  (function() {
+    var theme;
+    try { theme = localStorage.getItem('theme'); } catch (e) {}
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    var root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    var darkLink = document.getElementById('highlight-dark');
+    if (darkLink) darkLink.disabled = theme !== 'dark';
+  })();
+</script>

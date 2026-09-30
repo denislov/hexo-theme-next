@@ -1,50 +1,44 @@
-header.header {
-  gemini-block();
+// Top navigation bar layout (this fork replaces the original two-column
+// Pisces/Gemini layout: the left sidebar is gone, the header is a full-width
+// sticky bar, and the content is centred below it).
 
-  +tablet-mobile() {
-    border-radius: initial;
-  }
+header.header {
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--topbar-border);
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  position: sticky;
+  top: 0;
+  z-index: 30;
 }
 
 .main {
-  // Make sure that .header and .main-inner are the same height
-  // Required for .sidebar `position: sticky;`
-  align-items: stretch;
-  display: flex;
-  justify-content: space-between;
-  main-container();
-
-  if ($sidebar-toggle-alignment == 'right') {
-    flex-direction: row-reverse;
-  }
-
-  +tablet-mobile() {
-    display: block;
-    width: auto;
-  }
+  display: block;
+  margin: 0;
+  width: 100%;
 }
 
 .main-inner {
   border-radius: $border-radius-inner;
   box-sizing: border-box;
-  width: $content-wrap;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 12px;
+  max-width: 900px;
+  width: 100%;
 
   +tablet-mobile() {
     border-radius: initial;
-    width: 100%;
+  }
+
+  +mobile() {
+    margin-top: 8px;
   }
 }
 
 .footer-inner {
-  if ($sidebar-toggle-alignment == 'right') {
-    padding-right: $sidebar-width-dual-column + $sidebar-offset;
-  } else {
-    padding-left: $sidebar-width-dual-column + $sidebar-offset;
-  }
-
-  +tablet-mobile() {
-    padding-left: 0;
-    padding-right: 0;
-    width: auto;
-  }
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
 }

@@ -1,40 +1,83 @@
+// Horizontal tab bar (this fork). The theme's default Pisces menu is a
+// vertical sidebar menu, so most of it is replaced here.
+
 .site-nav {
-  +tablet() {
-    site-nav-hide-by-default();
+  background: transparent;
+  height: auto;
+  overflow: visible;
+  visibility: visible;
+}
+
+.main-menu {
+  border-top: 1px solid var(--topbar-border);
+  display: flex;
+  // `flex-wrap` is a mixin name in this theme, so use the `flex-flow`
+  // shorthand to set `nowrap` without triggering it.
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  margin: 0;
+  overflow-x: auto;
+  padding: 0 12px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
 .menu .menu-item {
-  display: block;
+  display: inline-block;
   margin: 0;
+  white-space: nowrap;
 
   a {
-    padding: 5px 20px;
-    // For .menu-item-active::after
+    background: transparent;
+    border-bottom: 2px solid transparent;
+    color: var(--topbar-fg-dim);
+    display: block;
+    font-size: 1.05em;
+    padding: 15px 20px;
     position: relative;
-    transition-property: background-color;
-    menu-item-row();
-  }
+    transition: color .2s ease, border-color .2s ease;
 
-  +tablet-mobile() {
-    &.menu-item-search {
-      display: none;
+    &:hover {
+      background: transparent;
+      color: var(--topbar-fg);
+    }
+
+    &.menu-item-active {
+      background: transparent;
+      border-bottom-color: var(--topbar-fg);
+      color: var(--topbar-fg);
     }
   }
 }
 
-if (not hexo-config('menu_settings.badges')) {
-  // Only apply to the main menu
-  // Fix issue #850
-  .main-menu .menu-item-active::after {
-    background: $grey;
-    border-radius: 50%;
-    content: ' ';
-    height: 6px;
-    margin-top: -3px;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    width: 6px;
+// The Pisces active dot does not belong in a horizontal tab bar.
+.main-menu .menu-item-active::after {
+  display: none;
+}
+
+// Search lives in the top-right controls now.
+.menu-item-search {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .main-menu {
+    padding: 0 6px;
+  }
+
+  .menu .menu-item a {
+    font-size: 1em;
+    padding: 12px 14px;
+  }
+}
+
+// Wide screens: the tab bar sits inside the header row, no separator needed.
+@media (min-width: 768px) {
+  .main-menu {
+    border-top: 0;
+    padding: 0;
   }
 }

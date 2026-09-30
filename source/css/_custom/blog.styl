@@ -1,0 +1,195 @@
+// ------------------------------------------------------------------
+// Blog-specific customisations (added by this fork).
+//
+// Layout changes live in `_schemes/Pisces/{_layout,_header,_menu}.styl`;
+// this file only adds new components and the top-bar / dark palette.
+// It is imported last in `main.styl`.
+// ------------------------------------------------------------------
+
+// Top-bar palette. Default (no data-theme) is a dark bar; the inline head
+// script sets `data-theme` on <html> before the body renders.
+:root {
+  --topbar-bg: #222;
+  --topbar-fg: #fff;
+  --topbar-fg-dim: rgba(255, 255, 255, .72);
+  --topbar-border: rgba(255, 255, 255, .12);
+}
+
+html[data-theme='light'] {
+  --topbar-bg: #fff;
+  --topbar-fg: #222;
+  --topbar-fg-dim: rgba(0, 0, 0, .6);
+  --topbar-border: rgba(0, 0, 0, .1);
+}
+
+html[data-theme='dark'] {
+  --topbar-bg: #222;
+  --topbar-fg: #fff;
+  --topbar-fg-dim: rgba(255, 255, 255, .72);
+  --topbar-border: rgba(255, 255, 255, .12);
+}
+
+// Manual light/dark toggle button (markup in `header/brand.njk`).
+.theme-toggle {
+  background: transparent;
+  border: 0;
+  color: var(--topbar-fg-dim);
+  cursor: pointer;
+  font-size: 1.3em;
+  line-height: 1;
+  padding: 12px;
+}
+
+.theme-toggle:hover {
+  color: var(--topbar-fg);
+}
+
+// Floating table-of-contents button + slide-in drawer
+// (markup in `_partials/toc-drawer.njk`).
+.toc-fab {
+  align-items: center;
+  background: var(--theme-color);
+  border: 0;
+  border-radius: 50%;
+  bottom: 72px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.05em;
+  height: 40px;
+  justify-content: center;
+  opacity: .85;
+  padding: 0;
+  position: fixed;
+  right: 30px;
+  transition: opacity .2s ease, transform .2s ease;
+  width: 40px;
+  z-index: 30;
+}
+
+.toc-fab:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.toc-dimmer {
+  background: rgba(0, 0, 0, .4);
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: opacity .3s ease, visibility .3s ease;
+  visibility: hidden;
+  width: 100%;
+  z-index: 38;
+}
+
+.toc-dimmer.toc-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.toc-drawer {
+  background: var(--content-bg-color);
+  box-shadow: -2px 0 12px rgba(0, 0, 0, .2);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 85%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  transition: transform .3s ease;
+  width: 320px;
+  z-index: 39;
+}
+
+.toc-drawer.toc-open {
+  transform: translateX(0);
+}
+
+.toc-drawer-header {
+  align-items: center;
+  border-bottom: 1px solid var(--topbar-border);
+  display: flex;
+  flex: 0 0 auto;
+  font-weight: 600;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.toc-drawer-close {
+  background: transparent;
+  border: 0;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 1.05em;
+  padding: 4px 6px;
+}
+
+.toc-drawer-close:hover {
+  color: var(--link-color);
+}
+
+.toc-drawer-body {
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px 16px;
+}
+
+.toc-drawer .post-toc {
+  font-size: .875em;
+}
+
+body.toc-open {
+  overflow: hidden;
+}
+
+// Dark syntax highlighting. Highlight token colours are not part of the
+// `lightdark` variable set, hence the explicit overrides + toggled
+// `highlight-dark.css`. The media query is the no-JS fallback.
+@media (prefers-color-scheme: dark) {
+  :root {
+    --highlight-background: #1c1b1b;
+    --highlight-foreground: #fff;
+    --highlight-gutter-background: #323131;
+    --highlight-gutter-foreground: #e8e8e8;
+  }
+
+  figure.highlight {
+    color-scheme: dark;
+  }
+}
+
+html[data-theme='dark'] {
+  --highlight-background: #1c1b1b;
+  --highlight-foreground: #fff;
+  --highlight-gutter-background: #323131;
+  --highlight-gutter-foreground: #e8e8e8;
+}
+
+html[data-theme='light'] {
+  --highlight-background: #f3f3f3;
+  --highlight-foreground: #444;
+  --highlight-gutter-background: #e1e1e1;
+  --highlight-gutter-foreground: #555;
+}
+
+html[data-theme='dark'] figure.highlight {
+  color-scheme: dark;
+}
+
+@media (max-width: 767px) {
+  .theme-toggle {
+    font-size: 1.2em;
+  }
+
+  .toc-fab {
+    bottom: 64px;
+    right: 20px;
+  }
+}
