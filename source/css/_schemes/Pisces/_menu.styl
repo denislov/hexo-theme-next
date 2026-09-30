@@ -56,8 +56,9 @@
 // The Pisces active dot is not defined for this scheme anymore (the upstream
 // rule lived in the vertical-menu version of this file); nothing to hide here.
 
-// Search lives in the top-right controls now.
-.menu-item-search {
+// Search lives in the top-right controls now. Must out-specify the
+// `.menu .menu-item { display: inline-block }` rule above it.
+.menu .menu-item.menu-item-search {
   display: none;
 }
 
