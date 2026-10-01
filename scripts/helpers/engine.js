@@ -99,7 +99,8 @@ hexo.extend.helper.register('post_count', function(year) {
 // Social metadata describes the article, not the language of its surrounding UI.
 hexo.extend.helper.register('next_open_graph', function() {
   const options = {
-    url: this.page.canonical_url || this.url,
+    // og:url must match the canonical form (no trailing index.html).
+    url: (this.page.canonical_url || this.url).replace(/index\.html$/, ''),
     language: this.page.content_lang || this.page.lang,
     ...this.theme.open_graph.options
   };
