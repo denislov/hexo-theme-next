@@ -1,6 +1,11 @@
 {% macro render(node) %}
 
-  {%- set itemURL = node.path %}
+  {#- Paths follow the page language when a translated counterpart exists
+      (site helper `i18n_menu_path`); it returns an empty string to hide an
+      item that has no counterpart. Falls back to the configured path. -#}
+  {%- set itemURL = i18n_menu_path(node.path) if i18n_menu_path else node.path %}
+
+  {%- if itemURL %}
   <li class="menu-item menu-item-{{ node.name | lower | replace(' ', '-') }}">
 
     {%- set menuIcon = '<i class="' + node.icon + ' fa-fw"></i>' if theme.menu_settings.icons and node.icon else '' %}
@@ -24,5 +29,6 @@
     {{- next_url(itemURL, menuIcon + menuText + menuBadge, {rel: 'section'}) -}}
 
   </li>
+  {%- endif %}
 
 {% endmacro %}
