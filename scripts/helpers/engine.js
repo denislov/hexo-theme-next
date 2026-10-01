@@ -98,11 +98,16 @@ hexo.extend.helper.register('post_count', function(year) {
 
 // Social metadata describes the article, not the language of its surrounding UI.
 hexo.extend.helper.register('next_open_graph', function() {
-  return this.open_graph({
+  const options = {
     url: this.page.canonical_url || this.url,
     language: this.page.content_lang || this.page.lang,
     ...this.theme.open_graph.options
-  });
+  };
+  // An explicit page cover wins; otherwise use the site-wide card. Passing an
+  // image also stops Hexo from scraping every <img> out of the post body.
+  const image = this.page.cover || this.theme.open_graph.default_image;
+  if (image && !options.image) options.image = this.url_for(image);
+  return this.open_graph(options);
 });
 
 hexo.extend.helper.register('gitalk_md5', function(path) {
