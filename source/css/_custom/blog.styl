@@ -44,6 +44,42 @@ html[data-theme='dark'] {
   color: var(--topbar-fg);
 }
 
+// Language switcher in the top bar (markup: `_partials/languages.njk`,
+// rendered inside `.site-nav-right` by `header/brand.njk`).
+// The upstream `.languages` rules in `_common/outline/footer/index.styl` still
+// supply `position: relative` plus the invisible full-size `<select>` overlay,
+// so the whole label stays clickable.
+.site-nav-right .languages {
+  color: var(--topbar-fg-dim);
+  font-size: 1.2em;
+  line-height: 1;
+  padding: 12px;
+
+  &:hover {
+    color: var(--topbar-fg);
+  }
+
+  .lang-select-label {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+  }
+
+  // Label is a hint, not a control: keep it a step smaller than the tabs.
+  .lang-select-label span {
+    font-size: .76em;
+    margin: 0 .35em;
+  }
+
+  +mobile() {
+    // Phones: icon only, so the bar does not crowd.
+    .lang-select-label span,
+    .lang-caret {
+      display: none;
+    }
+  }
+}
+
 // Floating table-of-contents button + slide-in drawer
 // (markup in `_partials/toc-drawer.njk`).
 .toc-fab {

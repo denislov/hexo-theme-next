@@ -31,6 +31,12 @@
     <button type="button" class="theme-toggle" aria-label="{{ __('accessibility.theme_toggle') }}">
       <i class="fa fa-moon"></i>
     </button>
+
+    {#- Language switcher lives in the top bar, next to search. Candidate languages
+        are narrowed to the ones whose target page really exists by
+        `scripts/i18n-languages.js` in the site repo. -#}
+    {{ partial('_partials/languages.njk') }}
+
     <div class="toggle popup-trigger" aria-label="{{ __('menu.search') }}" role="button">
       {%- if theme.algolia_search.enable or theme.local_search.enable %}
         <i class="fa fa-search fa-fw fa-lg"></i>
