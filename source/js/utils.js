@@ -303,7 +303,10 @@ NexT.utils = {
       sel.addEventListener('change', () => {
         const target = sel.options[sel.selectedIndex];
         document.querySelectorAll('.lang-select-label span').forEach(span => {
-          span.innerText = target.text;
+          span.textContent = target.text.trim();
+        });
+        document.querySelectorAll('.languages').forEach(container => {
+          container.title = target.dataset.languageName;
         });
         // Disable Pjax to force refresh translation of menu item
         window.location.href = target.dataset.href;

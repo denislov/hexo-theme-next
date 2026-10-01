@@ -122,6 +122,17 @@ hexo.extend.helper.register('i18n_path', function(language) {
 });
 
 /**
+ * Compact UI code. Keep regional tags only when primary codes would collide.
+ */
+hexo.extend.helper.register('language_code', function(language) {
+  const tag = String(language || '').replace(/_/g, '-');
+  const primary = tag.split('-')[0].toUpperCase();
+  const languages = [].concat(this.config.language || []).filter(lang => lang !== 'default');
+  const matches = languages.filter(lang => String(lang).split(/[-_]/)[0].toUpperCase() === primary);
+  return matches.length > 1 ? tag.toUpperCase() : primary;
+});
+
+/**
  * Get the language name
  */
 hexo.extend.helper.register('language_name', function(language) {
