@@ -12,6 +12,9 @@
   {%- for translation in page.translations %}
     <link rel="alternate" hreflang="{{ translation.lang }}" href="{{ translation.url | replace(r/index\.html$/, '') }}">
   {%- endfor %}
+  {%- if page.x_default %}
+    <link rel="alternate" hreflang="x-default" href="{{ page.x_default | replace(r/index\.html$/, '') }}">
+  {%- endif %}
 {%- endif %}
 {%- if page.noindex %}
 <meta name="robots" content="noindex">
