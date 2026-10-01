@@ -26,7 +26,9 @@
       {%- endfor %}
     {%- endif %}
 
-    {{- next_url(itemURL, menuIcon + menuText + menuBadge, {rel: 'section'}) -}}
+    {#- Home is a destination, not the parent section of every localized URL. -#}
+    {%- set menuMatch = 'exact' if node.name === 'home' else 'prefix' %}
+    {{- next_url(itemURL, menuIcon + menuText + menuBadge, {rel: 'section', 'data-menu-match': menuMatch}) -}}
 
   </li>
   {%- endif %}

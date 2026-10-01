@@ -282,10 +282,17 @@ NexT.utils = {
   },
 
   registerActiveMenuItem() {
+    // Treat directory URLs and their index.html forms as the same destination.
+    const normalize = path => path.replace(/\/index\.html$/, '/').replace(/\/+$/, '') || '/';
+    const currentPath = normalize(location.pathname);
     document.querySelectorAll('.menu-item a[href]').forEach(target => {
-      const isSamePath = target.pathname === location.pathname || target.pathname === location.pathname.replace('index.html', '');
-      const isSubPath = !CONFIG.root.startsWith(target.pathname) && location.pathname.startsWith(target.pathname);
-      target.classList.toggle('menu-item-active', target.hostname === location.hostname && (isSamePath || isSubPath));
+      const menuPath = normalize(target.pathname);
+      const isSamePath = menuPath === currentPath;
+      const isSubPath = target.dataset.menuMatch !== 'exact' && menuPath !== '/' && currentPath.startsWith(`${menuPath}/`);
+      const active = target.origin === location.origin && (isSamePath || isSubPath);
+      target.classList.toggle('menu-item-active', active);
+      if (active) target.setAttribute('aria-current', isSamePath ? 'page' : 'true');
+      else target.removeAttribute('aria-current');
     });
   },
 
