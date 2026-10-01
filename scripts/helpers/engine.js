@@ -96,6 +96,15 @@ hexo.extend.helper.register('post_count', function(year) {
   return this.site.posts.filter(post => this.date(post.date, 'YYYY') === year).count();
 });
 
+// Social metadata describes the article, not the language of its surrounding UI.
+hexo.extend.helper.register('next_open_graph', function() {
+  return this.open_graph({
+    url: this.page.canonical_url || this.url,
+    language: this.page.content_lang || this.page.lang,
+    ...this.theme.open_graph.options
+  });
+});
+
 hexo.extend.helper.register('gitalk_md5', function(path) {
   const str = this.url_for(path);
   return crypto.createHash('md5').update(str).digest('hex');
@@ -105,9 +114,11 @@ hexo.extend.helper.register('gitalk_md5', function(path) {
  * Get page path given a certain language tag
  */
 hexo.extend.helper.register('i18n_path', function(language) {
-  const { path, lang } = this.page;
-  const base = path.startsWith(lang) ? path.slice(lang.length + 1) : path;
-  return this.url_for(`${this.languages.indexOf(language) === 0 ? '' : '/' + language}/${base}`);
+  const languages = [].concat(this.config.language || []).filter(lang => lang !== 'default');
+  const path = this.page.path || '';
+  const prefix = languages.slice(1).find(lang => path.startsWith(`${lang}/`));
+  const base = prefix ? path.slice(prefix.length + 1) : path;
+  return this.url_for(language === languages[0] ? base : `${language}/${base}`);
 });
 
 /**

@@ -5,10 +5,10 @@
       <span>{{ language_name(page.lang) }}</span>
       <i class="lang-caret fa fa-angle-down" aria-hidden="true"></i>
     </label>
-    <select class="lang-select" data-canonical="" aria-label="{{ __('accessibility.select_lang') }}">
+    <select class="lang-select" aria-label="{{ __('accessibility.select_lang') }}">
       {% for language in languages %}
         {%- set languageHref = i18n_page_link(language) if i18n_page_link else i18n_path(language) -%}
-        <option value="{{ language }}" data-href="{{ languageHref }}" selected="">
+        <option value="{{ language }}" data-href="{{ languageHref }}"{% if language === page.lang %} selected{% endif %}>
           {{ language_name(language) }}
         </option>
       {% endfor %}

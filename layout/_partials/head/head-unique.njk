@@ -1,17 +1,18 @@
 {%- if theme.open_graph.enable %}
-  {%- if theme.open_graph.options %}
-    {{ open_graph(theme.open_graph.options) }}
-  {%- else %}
-    {{ open_graph() }}
-  {%- endif %}
+  {{ next_open_graph() }}
 {%- endif %}
 
 {# https://github.com/theme-next/hexo-theme-next/issues/866 #}
-{%- set canonical = url | replace(r/index\.html$/, '') %}
+{%- set canonical = (page.canonical_url or url) | replace(r/index\.html$/, '') %}
 {%- if not config.permalink.endsWith('.html') %}
   {%- set canonical = canonical | replace(r/\.html$/, '') %}
 {%- endif %}
 <link rel="canonical" href="{{ canonical }}">
+{%- if page.translations and page.translations.length > 1 %}
+  {%- for translation in page.translations %}
+    <link rel="alternate" hreflang="{{ translation.lang }}" href="{{ translation.url | replace(r/index\.html$/, '') }}">
+  {%- endfor %}
+{%- endif %}
 {%- if page.noindex %}
 <meta name="robots" content="noindex">
 {%- endif %}

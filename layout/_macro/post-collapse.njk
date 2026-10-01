@@ -11,7 +11,7 @@
     </div>
   {%- endif %}
 
-  <article itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" lang="{{ post.content_lang or post.lang }}">
     <header class="post-header">
       <div class="post-meta-container">
         <time itemprop="dateCreated"
@@ -29,6 +29,9 @@
         {% else %}
           <a class="post-title-link" href="{{ url_for(post.path) }}" itemprop="url">
             <span itemprop="name">{{ post.title or __('post.untitled') }}</span>
+            {%- if post.content_lang and post.content_lang !== page.lang %}
+              <small class="post-content-language"> · {{ language_name(post.content_lang) }}</small>
+            {%- endif %}
           </a>
         {%- endif %}
       </div>

@@ -14,7 +14,7 @@
       <img class="custom-logo-image" src="{{ url_for(theme.custom_logo) }}" alt="{{ title }}">
     {%- endif %}
 
-    <a href="{{ config.root }}" class="brand" rel="start">
+    <a href="{{ url_for(i18n_menu_path('/') if i18n_menu_path else config.root) }}" class="brand" rel="start">
       <i class="logo-line"></i>
       <{% if is_home() or is_archive() %}h1{% else %}p{% endif %} class="site-title">{{ title }}</{% if is_home() or is_archive() %}h1{% else %}p{% endif %}>
       <i class="logo-line"></i>
@@ -32,9 +32,8 @@
       <i class="fa fa-moon"></i>
     </button>
 
-    {#- Language switcher lives in the top bar, next to search. Candidate languages
-        are narrowed to the ones whose target page really exists by
-        `scripts/i18n-languages.js` in the site repo. -#}
+    {#- UI language switcher. Article targets are resolved by the site's
+        content catalogue, including untranslated fallback versions. -#}
     {{ partial('_partials/languages.njk') }}
 
     <div class="toggle popup-trigger" aria-label="{{ __('menu.search') }}" role="button">

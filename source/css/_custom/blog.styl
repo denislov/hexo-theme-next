@@ -80,6 +80,26 @@ html[data-theme='dark'] {
   }
 }
 
+// Article content language is distinct from the UI language.
+.post-content-language {
+  color: var(--text-color);
+  font-size: .85em;
+  margin-top: .5em;
+  opacity: .8;
+}
+
+.post-language-versions {
+  display: flex;
+  flex-flow: row wrap;
+  gap: .8em;
+  justify-content: center;
+  margin-top: .5em;
+
+  [aria-current] {
+    font-weight: bold;
+  }
+}
+
 // Floating table-of-contents button + slide-in drawer
 // (markup in `_partials/toc-drawer.njk`).
 .toc-fab {

@@ -44,7 +44,7 @@ hexo.extend.helper.register('next_config', function() {
     };
   }
   if (config.search && theme.local_search?.enable) {
-    exportConfig.path = url_for(config.search.path);
+    exportConfig.path = url_for(this.i18n_search_path || config.search.path);
     exportConfig.localsearch = theme.local_search;
   }
   return exportConfig;

@@ -5,7 +5,7 @@
   {# Gallery support #}
   {{ post_gallery(post.photos) }}
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="{{ post.lang }}">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="{{ post.content_lang or post.lang }}">
     <link itemprop="mainEntityOfPage" href="{{ post.permalink }}">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -51,6 +51,20 @@
 
         <div class="post-meta-container">
           {{ partial('_partials/post/post-meta.njk') }}
+          {%- if post.content_lang and post.content_lang !== page.lang %}
+            <div class="post-content-language">{{ __('post.content_language', language_name(post.content_lang)) }}</div>
+          {%- endif %}
+          {%- if not is_index and post.article_versions and post.article_versions.length > 1 %}
+            <nav class="post-language-versions" aria-label="{{ __('post.other_languages') }}">
+              {%- for version in post.article_versions %}
+                {%- if version.lang === post.content_lang %}
+                  <span aria-current="true">{{ language_name(version.lang) }}</span>
+                {%- else %}
+                  <a href="{{ url_for(version.path) }}" lang="{{ version.lang }}">{{ language_name(version.lang) }}</a>
+                {%- endif %}
+              {%- endfor %}
+            </nav>
+          {%- endif %}
 
           {%- if post.description and (not theme.excerpt_description or not is_index) %}
             <div class="post-description">{{ post.description }}</div>

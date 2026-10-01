@@ -7,7 +7,6 @@ const keys = ['toc', 'reward_settings', 'quicklink'];
 hexo.extend.filter.register('template_locals', locals => {
   const { config } = hexo;
   const { __, theme, page } = locals;
-  const { i18n } = hexo.theme;
   // Hexo & NexT version
   locals.next_version = require('../../package.json').version;
   // Language & Config
@@ -15,8 +14,7 @@ hexo.extend.filter.register('template_locals', locals => {
   locals.subtitle = __('subtitle') !== 'subtitle' ? __('subtitle') : config.subtitle;
   locals.author = __('author') !== 'author' ? __('author') : config.author;
   locals.description = __('description') !== 'description' ? __('description') : config.description;
-  locals.languages = [...i18n.languages];
-  locals.languages.splice(locals.languages.indexOf('default'), 1);
+  locals.languages = [...new Set([].concat(config.language || []).filter(lang => lang && lang !== 'default'))];
   // See https://github.com/hexojs/hexo/pull/4614
   page.lang = page.lang || page.language;
   // Creative Commons

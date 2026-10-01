@@ -15,8 +15,9 @@ module.exports = hexo => {
     hexo.log.warn(`Since ${args[0]} is turned on, the ${args[1]} is disabled to avoid potential hazards.`);
   };
 
-  if (cache?.enable && language_switcher) {
-    warning('language_switcher', 'caching');
+  const multilingual = [].concat(hexo.config.language || []).filter(lang => lang !== 'default').length > 1;
+  if (cache?.enable && (language_switcher || multilingual)) {
+    warning(multilingual ? 'multiple UI languages' : 'language_switcher', 'caching');
     cache.enable = false;
   }
   if (cache?.enable && hexo.config.relative_link) {
